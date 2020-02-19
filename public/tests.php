@@ -22,4 +22,8 @@ include_once("../src/donnees.inc.php");
 // var_dump(Auto::trouverModele($voitures, 'Ford', 'California'));
 // var_dump(Auto::trouverModele($voitures, 'Ford', 'Fiesta'));
 var_dump(Auto::ariane('Ford', 'Fiesta'));
+echo Auto::image('Ford', 'Fiesta');
+echo Auto::listeMarques($voitures);
+// echo Auto::listeModele($nomMarque, $voitures[$nomMarque]);
+echo Auto::ligne_puissance($voitures[0][0]);
 ?>

@@ -68,18 +68,19 @@ class Auto {
 	 * @return string - Le HTML du fil d'Ariane
 	 */
 	static public function ariane($nomMarque, $nomModele){
-		$resultat='';
-		$resultat.='<nav id="ariane">';
+		$resultat ='<nav id="ariane">';
 		$resultat.='<ul>';
 		$resultat.='<li><a href="index.php">Accueil</a></li>';
 		if ($nomMarque !=''){
 			$resultat.='<li><a href="marque.php?nomMarque='.$nomMarque.'">'.$nomMarque.'</a></li>';
-		} else if ($nomModele !=''){
-			$resultat.='<li><span>'.$nomModele.'</span></li>';
+			if ($nomModele !=''){
+			   $resultat.='<li><span>'.$nomModele.'</span></li>';
+		   }
 		}
 		$resultat.='</ul>';
 		$resultat.='</nav>';
 		return $resultat;
+
 	}
 	 
 	/** Méthode "lien" qui retourne le code HTML d'un lien retrouvé dans la page index
@@ -89,8 +90,13 @@ class Auto {
 	 * @return string - Le HTML dw la balise <a>
 	 */
 	
-	 static public function lien($nomMarque, $nomModele){
-
+	 static public function lien($nomMarque, $nomModele, $balise=''){
+		$resultat ='<a href="modele.php?nomMarque='.$nomMarque;
+		if ($nomModele!=''){
+			$resultat .='&amp;nomModele='.$nomModele;
+		}
+		$resultat .='">'.$balise.'</a>';
+		return $resultat;
 	 }
 
 
@@ -104,8 +110,13 @@ class Auto {
 	 * @param string $class - La classe à donner à la balise. Valeur par défaut: "voiture". Note: Si la classe est différente de "voiture", le nom de l'image doit automatiquement être accompagné du suffixe "_tb"
 	 * @return string - Le HTML de la balise <img>
 	 */
-	static public function image($nomMarque, $nomModele, $class){
-
+	static public function image($nomMarque, $nomModele, $class = 'voiture'){
+		$resultat = '<img src="images/voitures/'.$nomMarque.'_'.$nomModele;
+		if ($class!='voiture'){
+			$resultat.='_tb';
+		}
+		$resultat.='.jpg" class="'.$class.'" alt="'.$nomMarque.' '.$nomModele.'" title="'.$nomMarque.' '.$nomModele.'" />';
+		return $resultat;
 	}
 
 
@@ -115,7 +126,17 @@ class Auto {
 	 * @return string - Le HTML du div "listeMarques"
 	 */
 	static public function listeMarques($autos){
+		$resultat='';
+		$resultat ='<ul class="listeMarques">';
 
+		foreach($autos as $idMarque => $lesModeles){
+			$resultat .='<li>';
+			$resultat .=Auto::lien($idMarque, '', $idMarque);
+			$resultat .= Auto::listeModeles($idMarque, $lesModeles);
+			$resultat .='</li>';
+		}
+		$resultat .='</ul>';
+		return $resultat;
 	}
 
 
@@ -127,6 +148,15 @@ class Auto {
 	 * @return string - Le HTML du ul "listeModeles"
 	 */
 	static public function listeModeles($nomMarque, $autosMarque){
+		$resultat='';
+		$resultat='<ul class="listeModeles">';
+		foreach($autosMarque as $leModele => $valeur){
+			$resultat.='<li>';
+			$resultat.=Auto::lien($nomMarque, $leModele,Auto::image($nomMarque, $leModele, '').'<span>'.$leModele.'</span>');
+			$resultat.='</li>';
+		}
+		$resultat.='</ul>';
+		return $resultat;
 
 	}
 
@@ -139,6 +169,12 @@ class Auto {
 	 */
 	static public function ligne($etiquette, $contenu){
 
+		$resultat='<tr>';
+		$resultat.='<td class="etiquette">'.$etiquette.' : </td>';
+		$resultat.='<td>'.$contenu.'</td>';
+		$resultat.='</tr>';
+
+		return $resultat;
 	}
 
 
@@ -149,7 +185,8 @@ class Auto {
 	 * @param string - Le HTML du tr
 	 */
 	static public function ligne_puissance($voiture){
-
+		$resultat=Auto::ligne($voiture[2], $voiture[2][0]);
+		return $resultat;
 	}
 
 
