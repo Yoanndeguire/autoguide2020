@@ -25,5 +25,5 @@ var_dump(Auto::ariane('Ford', 'Fiesta'));
 echo Auto::image('Ford', 'Fiesta');
 echo Auto::listeMarques($voitures);
 // echo Auto::listeModele($nomMarque, $voitures[$nomMarque]);
-echo Auto::ligne_puissance($voitures[0][0]);
+echo Auto::ligne_puissance($voitures['Ford']['Fiesta']);
 ?>

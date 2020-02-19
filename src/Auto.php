@@ -70,12 +70,14 @@ class Auto {
 	static public function ariane($nomMarque, $nomModele){
 		$resultat ='<nav id="ariane">';
 		$resultat.='<ul>';
-		$resultat.='<li><a href="index.php">Accueil</a></li>';
 		if ($nomMarque !=''){
+			$resultat.='<li><a href="index.php">Accueil</a></li>';
 			$resultat.='<li><a href="marque.php?nomMarque='.$nomMarque.'">'.$nomMarque.'</a></li>';
 			if ($nomModele !=''){
 			   $resultat.='<li><span>'.$nomModele.'</span></li>';
 		   }
+		} else{
+			$resultat.='<li><span>Accueil</span></li>';
 		}
 		$resultat.='</ul>';
 		$resultat.='</nav>';
@@ -185,7 +187,9 @@ class Auto {
 	 * @param string - Le HTML du tr
 	 */
 	static public function ligne_puissance($voiture){
-		$resultat=Auto::ligne($voiture[2], $voiture[2][0]);
+		$parties = explode(':',$voiture['puissance']);
+		$contenu= $parties[0].' ch @'.$parties[1].' tr/min';
+		$resultat=Auto::ligne('Puissance', $contenu);
 		return $resultat;
 	}
 
@@ -197,7 +201,10 @@ class Auto {
 	 * @param string - Le HTML du tr
 	 */
 	static public function ligne_couple($voiture){
-
+		$parties = explode(':',$voiture['couple']);
+		$contenu= $parties[0].' lb-pi @'.$parties[1].' tr/min';
+		$resultat=Auto::ligne('Couple', $contenu);
+		return $resultat;
 	}
 
 
@@ -207,7 +214,10 @@ class Auto {
 	 * @return string - Le HTML du tr
 	 */
 	static public function ligne_transmissions($voiture){
-
+		$parties = explode(':',$voiture['transmissions']);
+		$contenu= $parties[0].' lb-pi @'.$parties[1].' tr/min';
+		$resultat=Auto::ligne('Transmissions', $contenu);
+		return $resultat;
 	}
 
 
