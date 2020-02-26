@@ -26,7 +26,7 @@ $nomMarque = $_GET['nomMarque'];
 <head>
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="css/autoguide.css" />
-	<?php echo Auto::titre($nomMarque); ?>
+	<title><?php echo Auto::titre($nomMarque); ?></title>
 </head>
 
 <body>
@@ -40,7 +40,7 @@ $nomMarque = $_GET['nomMarque'];
 				<header>
 				<h1><?php echo Auto::titre($nomMarque); ?></h1>
 				</header>
-				<?php echo Auto::listeModeles($nomMarque, $voiture[$nomMarque]); ?>
+				<?php echo Auto::listeModeles($nomMarque, $voitures[$nomMarque]); ?>
 			</article>
 		</section>
 		<?php include("../components/footer.php");?>

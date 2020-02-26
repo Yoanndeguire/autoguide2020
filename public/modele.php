@@ -21,7 +21,12 @@ include("../src/donnees.inc.php");
 
 $nomMarque = $_GET['nomMarque'];
 $nomModele = $_GET['nomModele'];
-
+$voitures = $voitures[$nomMarque][$nomModele];
+if(!isset($_GET['nomMarque'])){
+	$nomMarque = $_GET['nomMarque'];
+	header('Location: http://www.marque.php?nomMarque='.$nomMarque);
+	die;
+}
 
 ?><!DOCTYPE html>
 <html lang="fr">

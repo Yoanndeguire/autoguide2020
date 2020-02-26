@@ -72,9 +72,11 @@ class Auto {
 		$resultat.='<ul>';
 		if ($nomMarque !=''){
 			$resultat.='<li><a href="index.php">Accueil</a></li>';
-			$resultat.='<li><a href="marque.php?nomMarque='.$nomMarque.'">'.$nomMarque.'</a></li>';
 			if ($nomModele !=''){
-			   $resultat.='<li><span>'.$nomModele.'</span></li>';
+				$resultat.='<li><a href="marque.php?nomMarque='.$nomMarque.'">'.$nomMarque.'</a></li>';
+				$resultat.='<li><span>'.$nomModele.'</span></li>';
+			}else{	
+				$resultat.='<li><span>'.$nomMarque.'</span></li>';
 		   }
 		} else{
 			$resultat.='<li><span>Accueil</span></li>';
@@ -92,16 +94,15 @@ class Auto {
 	 * @return string - Le HTML dw la balise <a>
 	 */
 	
-	 static public function lien($direction=false, $nomMarque, $nomModele, $balise=''){
-
-		 $lien='marque';
-		if($direction==true){
+	 static public function lien($nomMarque, $nomModele, $balise=''){
+		$lien='';
+		if ($nomModele==''){
+			$lien='marque';
+			$resultat ='<a href="'.$lien.'.php?nomMarque='.$nomMarque;
+		} else if($nomModele!='') {
 			$lien='modele';
-		}
-		 
-		$resultat ='<a href="'.$lien.'.php?nomMarque='.$nomMarque;
-		if ($nomModele!=''){
-			$resultat .='&amp;nomModele='.$nomModele;
+			$resultat ='<a href="'.$lien.'.php?nomMarque='.$nomMarque.'&amp;nomModele='.$nomModele;
+			
 		}
 		$resultat .='">'.$balise.'</a>';
 		return $resultat;
@@ -139,7 +140,7 @@ class Auto {
 
 		foreach($autos as $idMarque => $lesModeles){
 			$resultat .='<li>';
-			$resultat .=Auto::lien(false, $idMarque, '', $idMarque);
+			$resultat .=Auto::lien($idMarque, '', $idMarque);
 			$resultat .= Auto::listeModeles($idMarque, $lesModeles);
 			$resultat .='</li>';
 		}
@@ -160,7 +161,7 @@ class Auto {
 		$resultat='<ul class="listeModeles">';
 		foreach($autosMarque as $leModele=>$valeur){
 			$resultat.='<li>';
-			$resultat.=Auto::lien(true, $nomMarque, $leModele,Auto::image($nomMarque, $leModele, '').'<span>'.$leModele.'</span>');
+			$resultat.=Auto::lien($nomMarque, $leModele,Auto::image($nomMarque, $leModele, 'tb').'<span>'.$leModele.'</span>');
 			$resultat.='</li>';
 		}
 		$resultat.='</ul>';
