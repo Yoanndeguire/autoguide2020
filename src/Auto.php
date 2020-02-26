@@ -3,7 +3,7 @@
 =========================================================================
 Intégration web III - TP1
 -------------------------------------------------------------------------
-Votre nom :
+Votre nom :Yoann Deguire
 -------------------------------------------------------------------------
 - Compléter les méthodes suivantes
 - Toutes les méthodes sont statiques
@@ -92,8 +92,14 @@ class Auto {
 	 * @return string - Le HTML dw la balise <a>
 	 */
 	
-	 static public function lien($nomMarque, $nomModele, $balise=''){
-		$resultat ='<a href="modele.php?nomMarque='.$nomMarque;
+	 static public function lien($direction=false, $nomMarque, $nomModele, $balise=''){
+
+		 $lien='marque';
+		if($direction==true){
+			$lien='modele';
+		}
+		 
+		$resultat ='<a href="'.$lien.'.php?nomMarque='.$nomMarque;
 		if ($nomModele!=''){
 			$resultat .='&amp;nomModele='.$nomModele;
 		}
@@ -133,7 +139,7 @@ class Auto {
 
 		foreach($autos as $idMarque => $lesModeles){
 			$resultat .='<li>';
-			$resultat .=Auto::lien($idMarque, '', $idMarque);
+			$resultat .=Auto::lien(false, $idMarque, '', $idMarque);
 			$resultat .= Auto::listeModeles($idMarque, $lesModeles);
 			$resultat .='</li>';
 		}
@@ -152,9 +158,9 @@ class Auto {
 	static public function listeModeles($nomMarque, $autosMarque){
 		$resultat='';
 		$resultat='<ul class="listeModeles">';
-		foreach($autosMarque as $leModele => $valeur){
+		foreach($autosMarque as $leModele=>$valeur){
 			$resultat.='<li>';
-			$resultat.=Auto::lien($nomMarque, $leModele,Auto::image($nomMarque, $leModele, '').'<span>'.$leModele.'</span>');
+			$resultat.=Auto::lien(true, $nomMarque, $leModele,Auto::image($nomMarque, $leModele, '').'<span>'.$leModele.'</span>');
 			$resultat.='</li>';
 		}
 		$resultat.='</ul>';
@@ -179,6 +185,12 @@ class Auto {
 		return $resultat;
 	}
 
+
+	static public function ligne_moteur($voiture){
+		$contenu = $voiture['moteur'];
+		$resultat=Auto::ligne('Moteur',$contenu);
+		return $resultat;
+	}
 
 	/** Méthode "ligne_puissance" qui retourne la ligne de la puissance (2e ligne) de la voiture
 	 * en lui donnant le format adéquat (voir maquette, page modele.php)
@@ -214,8 +226,11 @@ class Auto {
 	 * @return string - Le HTML du tr
 	 */
 	static public function ligne_transmissions($voiture){
-		$parties = explode(':',$voiture['transmissions']);
-		$contenu= $parties[0].' lb-pi @'.$parties[1].' tr/min';
+		$contenu='<ul class="transmissions">';
+		foreach($voiture['transmissions'] as $idTran=>$transmission){
+			$contenu.= '<li>'.$transmission.'</li>';
+		}
+		$contenu.='</ul>';
 		$resultat=Auto::ligne('Transmissions', $contenu);
 		return $resultat;
 	}
@@ -227,7 +242,13 @@ class Auto {
 	 * @return string - Le HTML du tr
 	 */
 	static public function ligne_consommation($voiture){
-
+		$contenu='<ul class="consommation">';
+		foreach($voiture['consommation'] as $idCons=>$consommation){
+			$contenu.= '<li>'.$idCons.' : '.$consommation.' litres/100 km</li>';
+		}
+		$contenu.='</ul>';
+		$resultat=Auto::ligne('Consommation', $contenu);
+		return $resultat;
 	}
 
 
@@ -241,7 +262,21 @@ class Auto {
 	 */
 	
 	static public function affichageVoiture($voiture, $nomMarque, $nomModele){
-
+		
+		$resultat='<div class="voiture">';
+		$resultat.=Auto::image($nomMarque, $nomModele, 'voiture');
+		$resultat.='<h2>Prix de base</h2>';
+		$resultat.='<div class="prix">'.$voiture['prix'].' $</div>';
+		$resultat.='<h2>Caractéristiques</h2>';
+		$resultat.='<table class="caracteristiques">';
+		$resultat.=Auto::ligne_moteur($voiture);
+		$resultat.=Auto::ligne_puissance($voiture);
+		$resultat.=Auto::ligne_couple($voiture);
+		$resultat.=Auto::ligne_transmissions($voiture);
+		$resultat.=Auto::ligne_consommation($voiture);
+		$resultat.='</table>';
+		$resultat.='</div>';
+		return $resultat;
 	}
 
 }

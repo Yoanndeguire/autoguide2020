@@ -3,7 +3,7 @@
 =========================================================================
 Intégration web III - TP1
 -------------------------------------------------------------------------
-Votre nom :
+Votre nom :Yoann Deguire
 -------------------------------------------------------------------------
 Cette page affiche la liste des modèles en fonction de la marque fournie dans l'adresse
 - Inclure le fichier de la class Auto
@@ -15,11 +15,9 @@ Cette page affiche la liste des modèles en fonction de la marque fournie dans l
 - Si la marque ne se trouve pas dans la variable $voitures, on DOIT retourner à la page index.php
 =========================================================================
 */
- $nomMarque = $_GET['nomMarque'];
- if(!isset($_GET['nomMarque'])){
-	 header('location:marque.php?nomMarque='.$nomMarque);
-	 die;
- }
+include("../src/Auto.php");
+include("../src/donnees.inc.php");
+$nomMarque = $_GET['nomMarque'];
 
 ?>
 <!DOCTYPE html>
@@ -28,41 +26,25 @@ Cette page affiche la liste des modèles en fonction de la marque fournie dans l
 <head>
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="css/autoguide.css" />
-	<!-- /* Faire afficher le nom de la marque dans le title; */ -->
-	<title>Ford</title>
+	<?php echo Auto::titre($nomMarque); ?>
 </head>
 
 <body>
 	<div class="interface">
-		<!-- /* Inclure le header ici */ -->
-		<header>
-			<h1><a href="index.php">AutoGuide.qc</a></h1>
-		</header>
-		<!-- /* Faire afficher le fil d'Ariane ici; */ -->
-		<nav id="ariane">
-			<ul>
-				<li><a href="index.php">Accueil</a></li>
-				<li><span>Ferrari </span></li>
-			</ul>
-		</nav>
+	<?php include("../components/header.php");?>
+
+	<?php echo Auto::ariane($nomMarque, "", ""); ?>
+
 		<section class="body">
 			<article>
 				<header>
-					<!-- /* Faire afficher le nom de la marque dans le h1; */ -->
-					<h1>Ferrari</h1>
+				<h1><?php echo Auto::titre($nomMarque); ?></h1>
 				</header>
-				<!-- /* Faire afficher la liste de modèles ici; */ -->
-				<ul class="listeModeles">
-					<li><a href="modele.php?nomMarque=Ferrari&amp;nomModele=California"><img class="tb"
-								src="images/voitures/ferrari_california_tb.jpg" alt="Ferrari California"
-								title="Ferrari California" /><span>California</span></a></li>
-				</ul>
+				<?php echo Auto::listeModeles($nomMarque, $voiture[$nomMarque]); ?>
 			</article>
 		</section>
-		<!-- /* Inclure le footer ici */ -->
-		<footer>
-			&copy; 2020 - Travail fait dans le cadre du cours <cite>Intégration Web III</cite>
-		</footer>
+		<?php include("../components/footer.php");?>
+
 
 	</div>
 </body>
